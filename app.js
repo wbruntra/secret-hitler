@@ -131,7 +131,7 @@ var app = new Vue({
     },
 
     next_role: function() {
-      if (true || this.current_player == this.num_players) {
+      if (this.current_player == this.num_players) {
         this.show_roles = false
         this.show_flip = false
         this.show_main = true
