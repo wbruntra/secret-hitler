@@ -1,6 +1,20 @@
+var skin = {
+  big_bad: 'Hitler',
+  good_guy_id: 'Liberal',
+  bad_guy_id: 'Fascist',
+  good_guy_group: 'Liberals',
+  bad_guy_group: 'Fascists',
+  good_guy_policy: 'Liberal',
+  bad_guy_policy: 'Fascist',
+  president_title: 'President',
+  chancellor_title: 'Chancellor'
+}
+
 var app = new Vue({
   el: '#app',
   data: {
+    skin : skin,
+
     show_inputplayers: true,
     show_roles: false,
     show_rolecard: false,
@@ -103,12 +117,12 @@ var app = new Vue({
         this.num_liberal = Math.round(this.num_players*.6)
         this.num_fascist = this.num_players - this.num_liberal - 1
 
-        this.role_list = ["Hitler"]
+        this.role_list = [this.skin.big_bad]
         for (i = 0; i < this.num_liberal; i++) {
-          this.role_list.push("Liberal")
+          this.role_list.push(this.skin.good_guy_id)
         }
         for (i = 0; i < this.num_fascist; i++) {
-          this.role_list.push("Fascist")
+          this.role_list.push(this.skin.bad_guy_id)
         }
 
         for (i = 0; i < this.num_players; i++) {
@@ -150,10 +164,8 @@ var app = new Vue({
     },
 
     randomize_policies: function() {
-      this.policies_list_temp = [
-      "Fascist","Fascist","Fascist","Fascist","Fascist","Fascist",
-      "Fascist","Fascist","Fascist","Fascist","Fascist",
-      "Liberal","Liberal","Liberal","Liberal","Liberal","Liberal"]
+      this.policies_list_temp = [...Array(11).keys()].map(() => this.skin.bad_guy_policy)
+        .concat([...Array(6).keys()].map(() => this.skin.good_guy_policy))
 
       for (i = 0; i < this.played_policy_list.length; i++) {
         index = this.policies_list_temp.indexOf(this.played_policy_list[i])
@@ -283,20 +295,20 @@ var app = new Vue({
     },
 
     play_policy: function() {
-      if (this.played_policy == "Fascist") {
+      if (this.played_policy == this.skin.bad_guy_policy) {
         this.fascist_slots[this.fascist_slot_tracker] = true
         this.fascist_slot_tracker += 1
-        this.played_policy_list.push("Fascist")
+        this.played_policy_list.push(this.skin.bad_guy_policy)
         if (this.fascist_slot_tracker == 5) {
           this.enable_veto = true
         }
         if (this.fascist_slot_tracker == 6) {
           this.fascist_win()
         }
-      } else if ((this.played_policy == "Liberal")) {
+      } else if ((this.played_policy == this.skin.good_guy_policy)) {
         this.liberal_slots[this.liberal_slot_tracker] = true
         this.liberal_slot_tracker += 1
-        this.played_policy_list.push("Liberal")
+        this.played_policy_list.push(this.skin.good_guy_policy)
         if (this.liberal_slot_tracker == 5) {
           this.liberal_win()
         }
@@ -353,3 +365,5 @@ var app = new Vue({
   }
 
 })
+
+document.title = `Secret ${skin.big_bad}`
