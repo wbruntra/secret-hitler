@@ -11,7 +11,7 @@
 
     <script src="vue.min.js"></script>
 
-    <title>Secret Drumpf</title>
+    <title>Secret Bad Guy</title>
 
     <link rel="icon" href="icon.png">
 
@@ -49,7 +49,7 @@
     #rt_size {
       font-size: 300%;
       margin: 10px;
-      padding-top: 15%;
+      padding-top: 8%;
       width: 315px;
       height: 185px;
     }
@@ -107,7 +107,7 @@
       margin-right: 4px;
       background: white;
     }
-    #trumpist_slots {
+    #fascist_slots {
       padding: 0px;
       margin-bottom: 20px;
     }
@@ -147,7 +147,7 @@
 <div id="app">
 
   <div class="d-flex justify-content-center" id="top_bar">
-    	<b>secretdrumpf.xyz</b>
+    	<b v-show="skin.big_bad=='Hitler'">secrethitler.xyz</b>
   </div>
 
   <div class="d-flex justify-content-center" style="padding-top: 10px">
@@ -168,10 +168,10 @@
       </div>
 
       <div class="container-fluid" id="help">
-      <p class="small" style="margin-bottom: 10px">Secret Drumpf is a social deduction game for 5–10 people about finding and stopping the Secret Drumpf. The majority of players are liberals. If they can learn to trust each other, they have enough votes to control the table and win the game. But some players are trumpists. They will say whatever it takes to get elected, enact their agenda, and blame others for the fallout. The liberals must work together to discover the truth before the trumpists install their cold-blooded leader and win the game.</br></br>This handles assigning random roles, drawing random cards and keeping track of the board, on one mobile device. It is meant to replace the physical requirements of Secret Drumpf but keep the social, real life aspect of the game. Electing, voting, investigating, killing and all other social decisions are not included in order to maintain the spirit of the game.</p>
-      <p><b><a href="https://github.com/trentpiercy/secret-drumpf" target="_blank"><img src="github-icon.png" height="32" width="32"></img></a></b></p>
+      <p class="small" style="margin-bottom: 10px">Secret {{skin.big_bad}} is a social deduction game for 5–10 people about finding and stopping the Secret {{skin.big_bad}}. The majority of players are {{skin.good_guy_group}}. If they can learn to trust each other, they have enough votes to control the table and win the game. But some players are {{skin.bad_guy_group}}. They will say whatever it takes to get elected, enact their agenda, and blame others for the fallout. The {{skin.good_guy_group}} must work together to discover the truth before the {{skin.bad_guy_group}} install their cold-blooded leader and win the game.</br></br>This handles assigning random roles, drawing random cards and keeping track of the board, on one mobile device. It is meant to replace the physical requirements of Secret {{skin.big_bad}} but keep the social, real life aspect of the game. Electing, voting, investigating, killing and all other social decisions are not included in order to maintain the spirit of the game.</p>
+      <p><b><a href="https://github.com/trentpiercy/secret-hitler" target="_blank"><img src="github-icon.png" height="32" width="32"></img></a></b></p>
       <hr>
-      <p class="small"><b>Credit <a href="http://secretdrumpf.com" target="_blank">secretdrumpf.com</a></br>Creative Commons BY-NC-SA 4.0</b></p>
+      <p class="small" v-show="skin.big_bad=='Hitler'"><b>Credit <a href="http://secrethitler.com" target="_blank">secrethitler.com</a></br>Creative Commons BY-NC-SA 4.0</b></p>
       </p>
       </div>
 
@@ -186,7 +186,7 @@
       </div>
 
       <div class="container-fluid" id="rolecard" v-show="show_rolecard">
-        <div class="card card-inverse mb-3 text-center" id="rt_size" style="background-color: white;" v-bind:class="{ f_color : (role=='Trumpist'), l_color : (role=='Liberal'), h_color : (role=='Drumpf'), 'card-primary' : (role=='Liberal'), 'card-danger' : (role=='Trumpist'), 'card-warning' : (role=='Drumpf') }" @click="next_role"><b>{{role}}</b></div>
+        <div class="card card-inverse mb-3 text-center" id="rt_size" style="background-color: white;" v-bind:class="{ f_color : (role==skin.bad_guy_id), l_color : (role==skin.good_guy_id), h_color : (role==skin.big_bad), 'card-primary' : (role==skin.good_guy_id), 'card-danger' : (role==skin.bad_guy_id), 'card-warning' : (role==skin.big_bad) }" @click="next_role"><b>{{role}}</b></div>
         <div class="d-flex justify-content-center" id="next_button">
           <button type="button" class="btn btn-outline-success btn-lg" @click="next_role">Next Card</button>
         </div>
@@ -204,66 +204,66 @@
         <div class="container-fluid" id="l_slot" v-bind:class="{ l_filled : liberal_slots[2] }"></div>
         <div class="container-fluid" id="l_slot" v-bind:class="{ l_filled : liberal_slots[3] }"></div>
         <div class="container-fluid" id="l_slot" v-bind:class="{ l_filled : liberal_slots[4] }">
-          <p>Liberals Win</p>
+          <p>{{skin.good_guy_group}} Win</p>
         </div>
       </div>
     </div>
 
-    <div class="container-fluid" id="trumpist_slots" v-if="show_trumpist_5_6">
+    <div class="container-fluid" id="fascist_slots" v-if="show_fascist_5_6">
       <div class="d-flex justify-content-center">
-        <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : trumpist_slots[0] }"></div>
-        <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : trumpist_slots[1] }"></div>
-        <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : trumpist_slots[2] }">
-        <p>President examines top 3 cards</p></div>
+        <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : fascist_slots[0] }"></div>
+        <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : fascist_slots[1] }"></div>
+        <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : fascist_slots[2] }">
+        <p>{{skin.president_title}} examines top 3 cards</p></div>
       </div>
       <div class="d-flex justify-content-center">
-        <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : trumpist_slots[3] }">
-        <p>President must kill player</p></div>
-        <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : trumpist_slots[4] }">
-        <p>President must kill player. Veto unlocked</p></div>
-        <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : trumpist_slots[5] }"><p>Trumpists Win</p></div>
-      </div>
-    </div>
-
-    <div class="container-fluid" id="trumpist_slots" v-if="show_trumpist_7_8">
-      <div class="d-flex justify-content-center">
-       <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : trumpist_slots[0] }"></div>
-       <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : trumpist_slots[1] }">
-       <p>President investigates an identity</p></div>
-       <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : trumpist_slots[2] }">
-       <p>President chooses next President</p></div>
-      </div>
-      <div class="d-flex justify-content-center">
-       <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : trumpist_slots[3] }">
-       <p>President must kill player</p></div>
-       <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : trumpist_slots[4] }">
-       <p>President must kill player. Veto unlocked</p></div>
-       <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : trumpist_slots[5] }"><p>Trumpists Win</p></div>
+        <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : fascist_slots[3] }">
+        <p>{{skin.president_title}} must kill player</p></div>
+        <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : fascist_slots[4] }">
+        <p>{{skin.president_title}} must kill player. Veto unlocked</p></div>
+        <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : fascist_slots[5] }"><p>{{skin.bad_guy_group}} Win</p></div>
       </div>
     </div>
 
-    <div class="container-fluid" id="trumpist_slots" v-if="show_trumpist_9_10">
+    <div class="container-fluid" id="fascist_slots" v-if="show_fascist_7_8">
       <div class="d-flex justify-content-center">
-       <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : trumpist_slots[0] }">
-       <p>President investigates an identity</p></div>
-       <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : trumpist_slots[1] }">
-       <p>President investigates an identity</p></div>
-       <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : trumpist_slots[2] }">
-       <p>President chooses next President</p></div>
+       <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : fascist_slots[0] }"></div>
+       <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : fascist_slots[1] }">
+       <p>{{skin.president_title}} investigates an identity</p></div>
+       <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : fascist_slots[2] }">
+       <p>{{skin.president_title}} chooses next {{skin.president_title}}</p></div>
       </div>
       <div class="d-flex justify-content-center">
-       <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : trumpist_slots[3] }">
-       <p>President must kill player</p></div>
-       <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : trumpist_slots[4] }">
-       <p>President must kill player. Veto unlocked</p></div>
-       <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : trumpist_slots[5] }"><p>Trumpists Win</p></div>
+       <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : fascist_slots[3] }">
+       <p>{{skin.president_title}} must kill player</p></div>
+       <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : fascist_slots[4] }">
+       <p>{{skin.president_title}} must kill player. Veto unlocked</p></div>
+       <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : fascist_slots[5] }"><p>{{skin.bad_guy_group}} Win</p></div>
+      </div>
+    </div>
+
+    <div class="container-fluid" id="fascist_slots" v-if="show_fascist_9_10">
+      <div class="d-flex justify-content-center">
+       <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : fascist_slots[0] }">
+       <p>{{skin.president_title}} investigates an identity</p></div>
+       <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : fascist_slots[1] }">
+       <p>{{skin.president_title}} investigates an identity</p></div>
+       <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : fascist_slots[2] }">
+       <p>{{skin.president_title}} chooses next {{skin.president_title}}</p></div>
+      </div>
+      <div class="d-flex justify-content-center">
+       <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : fascist_slots[3] }">
+       <p>{{skin.president_title}} must kill player</p></div>
+       <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : fascist_slots[4] }">
+       <p>{{skin.president_title}} must kill player. Veto unlocked</p></div>
+       <div class="container-fluid" id="f_slot" v-bind:class="{ f_filled : fascist_slots[5] }"><p>{{skin.bad_guy_group}} Win</p></div>
       </div>
     </div>
 
     <div class="container-fluid" id="actions_box">
 		<div class="container-fluid" v-show="show_chancellor_confirm">
 			<div class="d-flex justify-content-center">
-      	<h3><b>Choose Chancellor</b></h3>
+      	<h3><b>Choose {{skin.chancellor_title}}</b></h3>
       </div>
 
       <div class="d-flex justify-content-center">
@@ -311,9 +311,9 @@
     <div class="d-flex justify-content-center" v-if="show_policies" id="discard_text"><h3><b>Tap to <font color="#500000">Discard</font></b></h3></div>
 
     <div class="d-flex justify-content-center" v-if="show_policies">
-      <div class="card card-inverse mb-3 text-center" id="policies" v-show="show_policy_1" v-bind:class="{ f_color : (drawn_policies[0]=='Trumpist'), l_color : (drawn_policies[0]=='Liberal'), '' : (drawn_policies[0]=='Liberal'), '' : (drawn_policies[0]=='Trumpist') }" @click="discard_1"><b>{{drawn_policies[0]}}</b></div>
-      <div class="card card-inverse mb-3 text-center" id="policies" v-show="show_policy_2" v-bind:class="{ f_color : (drawn_policies[1]=='Trumpist'), l_color : (drawn_policies[1]=='Liberal'), '' : (drawn_policies[1]=='Liberal'), '' : (drawn_policies[1]=='Trumpist') }" @click="discard_2"><b>{{drawn_policies[1]}}</b></div>
-      <div class="card card-inverse mb-3 text-center" id="policies" v-show="show_policy_3" v-bind:class="{ f_color : (drawn_policies[2]=='Trumpist'), l_color : (drawn_policies[2]=='Liberal'), '' : (drawn_policies[2]=='Liberal'), '' : (drawn_policies[2]=='Trumpist') }" @click="discard_3"><b>{{drawn_policies[2]}}</b></div>
+      <div class="card card-inverse mb-3 text-center" id="policies" v-show="show_policy_1" v-bind:class="{ f_color : (drawn_policies[0]==skin.bad_guy_policy), l_color : (drawn_policies[0]==skin.good_guy_policy), '' : (drawn_policies[0]==skin.good_guy_policy), '' : (drawn_policies[0]==skin.bad_guy_policy) }" @click="discard_1"><b>{{drawn_policies[0]}}</b></div>
+      <div class="card card-inverse mb-3 text-center" id="policies" v-show="show_policy_2" v-bind:class="{ f_color : (drawn_policies[1]==skin.bad_guy_policy), l_color : (drawn_policies[1]==skin.good_guy_policy), '' : (drawn_policies[1]==skin.good_guy_policy), '' : (drawn_policies[1]==skin.bad_guy_policy) }" @click="discard_2"><b>{{drawn_policies[1]}}</b></div>
+      <div class="card card-inverse mb-3 text-center" id="policies" v-show="show_policy_3" v-bind:class="{ f_color : (drawn_policies[2]==skin.bad_guy_policy), l_color : (drawn_policies[2]==skin.good_guy_policy), '' : (drawn_policies[2]==skin.good_guy_policy), '' : (drawn_policies[2]==skin.bad_guy_policy) }" @click="discard_3"><b>{{drawn_policies[2]}}</b></div>
     </div>
 
     <div class="container-fluid" v-if="show_policies">
@@ -324,12 +324,12 @@
 
     <div class="d-flex justify-content-center" v-if="show_liberal_win">
       <div class="container-fluid">
-        <h3><b><font color="#002752">Liberals Win!</font></b></h3><p class="small">Refresh to play again!</p>
+        <h3><b><font color="#002752">{{skin.good_guy_group}} Win!</font></b></h3><p class="small">Refresh to play again!</p>
       </div>
     </div>
-    <div class="d-flex justify-content-center" v-if="show_trumpist_win">
+    <div class="d-flex justify-content-center" v-if="show_fascist_win">
       <div class="container-fluid">
-        <h3><b><font color="#82121b">Trumpists Win!</font></b></h3><p class="small">Refresh to play again!</p>
+        <h3><b><font color="#82121b">{{skin.bad_guy_group}} Win!</font></b></h3><p class="small">Refresh to play again!</p>
       </div>
     </div>
 
@@ -342,9 +342,9 @@
       <div class="container-fluid" v-if="show_examine2" @click="dismiss_examine" style="margin-top: 15px;">
         <div class="d-flex justify-content-center"><h4><b>Dismiss Cards</b></h4></div>
         <div class="d-flex justify-content-center">
-          <div class="card card-inverse mb-3 text-center" id="policies" v-bind:class="{ f_color : (policies_list[0]=='Trumpist'), l_color : (policies_list[0]=='Liberal'), '' : (policies_list[0]=='Liberal'), '' : (policies_list[0]=='Trumpist') }"><b>{{policies_list[0]}}</b></div>
-          <div class="card card-inverse mb-3 text-center" id="policies" v-bind:class="{ f_color : (policies_list[1]=='Trumpist'), l_color : (policies_list[1]=='Liberal'), '' : (policies_list[1]=='Liberal'), '' : (policies_list[1]=='Trumpist') }"><b>{{policies_list[1]}}</b></div>
-          <div class="card card-inverse mb-3 text-center" id="policies" v-bind:class="{ f_color : (policies_list[2]=='Trumpist'), l_color : (policies_list[2]=='Liberal'), '' : (policies_list[2]=='Liberal'), '' : (policies_list[2]=='Trumpist') }"><b>{{policies_list[2]}}</b></div>
+          <div class="card card-inverse mb-3 text-center" id="policies" v-bind:class="{ f_color : (policies_list[0]==skin.bad_guy_policy), l_color : (policies_list[0]==skin.good_guy_policy), '' : (policies_list[0]==skin.good_guy_policy), '' : (policies_list[0]==skin.bad_guy_policy) }"><b>{{policies_list[0]}}</b></div>
+          <div class="card card-inverse mb-3 text-center" id="policies" v-bind:class="{ f_color : (policies_list[1]==skin.bad_guy_policy), l_color : (policies_list[1]==skin.good_guy_policy), '' : (policies_list[1]==skin.good_guy_policy), '' : (policies_list[1]==skin.bad_guy_policy) }"><b>{{policies_list[1]}}</b></div>
+          <div class="card card-inverse mb-3 text-center" id="policies" v-bind:class="{ f_color : (policies_list[2]==skin.bad_guy_policy), l_color : (policies_list[2]==skin.good_guy_policy), '' : (policies_list[2]==skin.good_guy_policy), '' : (policies_list[2]==skin.bad_guy_policy) }"><b>{{policies_list[2]}}</b></div>
         </div>
       </div>
     </div>

@@ -1,13 +1,27 @@
+var skin = {
+  big_bad: 'Voldemort',
+  good_guy_id: 'Fénix',
+  bad_guy_id: 'Mortífago',
+  good_guy_group: 'Fénix',
+  bad_guy_group: 'Mortífagos',
+  good_guy_policy: 'Protección de Muggles',
+  bad_guy_policy: 'Pureza de Sangre',
+  president_title: 'Presidente',
+  chancellor_title: 'Canciller'
+}
+
 var app = new Vue({
   el: '#app',
   data: {
+    skin : skin,
+
     show_inputplayers: true,
     show_roles: false,
     show_rolecard: false,
     show_flip: false,
     show_main: false,
     show_draw: false,
-    show_trumpist_win: false,
+    show_fascist_win: false,
     show_liberal_win: false,
     show_examine_all: false,
     show_examine1: false,
@@ -18,15 +32,15 @@ var app = new Vue({
 
     enable_veto: false,
 
-    show_trumpist_5_6: false,
-    show_trumpist_7_8: false,
-    show_trumpist_9_10: false,
+    show_fascist_5_6: false,
+    show_fascist_7_8: false,
+    show_fascist_9_10: false,
 
     examined: false,
 
     num_players: "",
     num_liberal: "",
-    num_trumpist: "",
+    num_fascist: "",
 
     player_roles: [],
     role_list: [],
@@ -45,9 +59,9 @@ var app = new Vue({
     government_in_chaos: false,
 
     liberal_slots: [false, false, false, false, false],
-    trumpist_slots: [false, false, false, false, false, false],
+    fascist_slots: [false, false, false, false, false, false],
     liberal_slot_tracker: 0,
-    trumpist_slot_tracker: 0,
+    fascist_slot_tracker: 0,
 
     show_policies: false,
     show_policy_1: false,
@@ -82,10 +96,10 @@ var app = new Vue({
       this.determine_players()
     },
 
-    trumpist_win: function() {
+    fascist_win: function() {
       this.show_draw = false
       this.show_chancellor_confirm = false
-      this.show_trumpist_win = true
+      this.show_fascist_win = true
     },
     liberal_win: function() {
       this.show_draw = false
@@ -101,14 +115,14 @@ var app = new Vue({
         this.show_inputplayers = false
 
         this.num_liberal = Math.round(this.num_players*.6)
-        this.num_trumpist = this.num_players - this.num_liberal - 1
+        this.num_fascist = this.num_players - this.num_liberal - 1
 
-        this.role_list = ["Drumpf"]
+        this.role_list = [this.skin.big_bad]
         for (i = 0; i < this.num_liberal; i++) {
-          this.role_list.push("Liberal")
+          this.role_list.push(this.skin.good_guy_id)
         }
-        for (i = 0; i < this.num_trumpist; i++) {
-          this.role_list.push("Trumpist")
+        for (i = 0; i < this.num_fascist; i++) {
+          this.role_list.push(this.skin.bad_guy_id)
         }
 
         for (i = 0; i < this.num_players; i++) {
@@ -121,11 +135,11 @@ var app = new Vue({
         this.randomize_policies()
 
         if (this.num_players == 5 || this.num_players == 6) {
-          this.show_trumpist_5_6 = true
+          this.show_fascist_5_6 = true
         } else if (this.num_players == 7 || this.num_players == 8) {
-          this.show_trumpist_7_8 = true
+          this.show_fascist_7_8 = true
         } else if (this.num_players == 9 || this.num_players == 10) {
-          this.show_trumpist_9_10 = true
+          this.show_fascist_9_10 = true
         }
       }
     },
@@ -150,10 +164,8 @@ var app = new Vue({
     },
 
     randomize_policies: function() {
-      this.policies_list_temp = [
-      "Trumpist","Trumpist","Trumpist","Trumpist","Trumpist","Trumpist",
-      "Trumpist","Trumpist","Trumpist","Trumpist","Trumpist",
-      "Liberal","Liberal","Liberal","Liberal","Liberal","Liberal"]
+      this.policies_list_temp = [...Array(11).keys()].map(() => this.skin.bad_guy_policy)
+        .concat([...Array(6).keys()].map(() => this.skin.good_guy_policy))
 
       for (i = 0; i < this.played_policy_list.length; i++) {
         index = this.policies_list_temp.indexOf(this.played_policy_list[i])
@@ -283,20 +295,20 @@ var app = new Vue({
     },
 
     play_policy: function() {
-      if (this.played_policy == "Trumpist") {
-        this.trumpist_slots[this.trumpist_slot_tracker] = true
-        this.trumpist_slot_tracker += 1
-        this.played_policy_list.push("Trumpist")
-        if (this.trumpist_slot_tracker == 5) {
+      if (this.played_policy == this.skin.bad_guy_policy) {
+        this.fascist_slots[this.fascist_slot_tracker] = true
+        this.fascist_slot_tracker += 1
+        this.played_policy_list.push(this.skin.bad_guy_policy)
+        if (this.fascist_slot_tracker == 5) {
           this.enable_veto = true
         }
-        if (this.trumpist_slot_tracker == 6) {
-          this.trumpist_win()
+        if (this.fascist_slot_tracker == 6) {
+          this.fascist_win()
         }
-      } else if ((this.played_policy == "Liberal")) {
+      } else if ((this.played_policy == this.skin.good_guy_policy)) {
         this.liberal_slots[this.liberal_slot_tracker] = true
         this.liberal_slot_tracker += 1
-        this.played_policy_list.push("Liberal")
+        this.played_policy_list.push(this.skin.good_guy_policy)
         if (this.liberal_slot_tracker == 5) {
           this.liberal_win()
         }
@@ -305,7 +317,7 @@ var app = new Vue({
       this.num_policies_left = this.policies_list.length
 
       examining = false
-      if (this.trumpist_slots[2] && this.show_trumpist_5_6 && this.examined == false) {
+      if (this.fascist_slots[2] && this.show_fascist_5_6 && this.examined == false) {
         if (this.num_policies_left < 3) {
           this.randomize_policies()
         }
@@ -322,7 +334,7 @@ var app = new Vue({
 
       if (this.num_policies_left < 3 && examining == false) {
         this.show_shuffle = true
-        if (this.show_liberal_win || this.show_trumpist_win) {
+        if (this.show_liberal_win || this.show_fascist_win) {
           this.show_shuffle = false
         }
         this.show_draw = false
@@ -353,3 +365,5 @@ var app = new Vue({
   }
 
 })
+
+document.title = `Secret ${skin.big_bad}`
